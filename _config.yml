@@ -1,0 +1,10 @@
+title: "DRAFT: Firejail on GitHub Pages"
+#title: firejail
+#title: FIREJAIL
+#title: Firejail Security Sandbox
+#title: Firejail Sandbox
+description: "Firejail - Linux namespaces sandbox program"
+
+theme: jekyll-theme-architect
+plugins:
+  - jekyll-feed
