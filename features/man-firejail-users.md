@@ -1,6 +1,6 @@
 # man firejail-users
 
-```
+~~~
 FIREJAIL-USERS(5)          firejail.users man page          FIREJAIL-USERS(5)
 
 NAME
@@ -62,4 +62,4 @@ SEE ALSO
        login(5)
 
 0.9.56                             Sep 2018                 FIREJAIL-USERS(5)
-```
+~~~

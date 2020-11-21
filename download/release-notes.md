@@ -2,7 +2,7 @@
 
 ## Latest:
 
-```
+~~~
 firejail (0.9.64) baseline; urgency=low
   * replaced --nowrap option with --wrap in firemon
   * The blocking action of seccomp filters has been changed from
@@ -63,11 +63,11 @@ firejail (0.9.56.2-LTS) baseline; urgency=low
   * fix CVE-2019-12499
   * other bugfixes
  -- netblue30   Tue, 4 Jun 2019 08:00:00 -0500
-```
+~~~
 
 ## Earlier:
 
-```
+~~~
 firejail (0.9.62.4) baseline; urgency=low
   * fix AppArmor broken in the previous release
   * miscellaneous fixes
@@ -985,4 +985,4 @@ firejail (0.9) baseline; urgency=low
   * First beta version
 
  -- netblue30   Sat, 12 Apr 2014 09:00:00 -0500
-```
+~~~

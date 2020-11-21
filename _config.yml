@@ -8,3 +8,7 @@ description: "Firejail - Linux namespaces sandbox program"
 theme: jekyll-theme-architect
 plugins:
   - jekyll-feed
+
+markdown: kramdown
+kramdown:
+  input: kramdown

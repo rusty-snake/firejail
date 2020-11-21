@@ -1,6 +1,6 @@
 # man firecfg
 
-```
+~~~
 FIRECFG(1)                     firecfg man page                    FIRECFG(1)
 
 NAME
@@ -113,4 +113,4 @@ SEE ALSO
        jail-users(5)
 
 0.9.56                             Sep 2018                        FIRECFG(1)
-```
+~~~

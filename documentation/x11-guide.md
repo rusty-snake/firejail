@@ -1,15 +1,8 @@
 # X11 Guide
+{:.no_toc}
 
-**Contents**
-
- * [Introduction](#introduction)
- * [Installing Xpra on Arch Linux](#installing-xpra-on-arch-linux)
- * [Configuring Xpra](#configuring-xpra)
- * [Configuring Xephyr](#configuring-xephyr)
- * [How to test](#how-to-test)
- * [Attaching new sandboxes to an existing X11 server](#attaching-new-sandboxes-to-an-existing-x11-server)
- * [Resizing Xephyr window](#resizing-xephyr-window)
-
++ ToC
+{:toc}
 
 ## Introduction
 
@@ -28,16 +21,16 @@ and it was replaced by another X11 server (X723 Unix socket)._
 
 The commands are as follows:
 
-```terminal
+~~~ terminal
 $ firejail --x11=xpra --net=eth0 program-and-arguments
 $ firejail --x11=xephyr --net=eth0 program-and-arguments
-```
+~~~
 
 A shorter form is also available:
 
-```terminal
+~~~ terminal
 $ firejail --x11 --net=eth0 program-and-arguments
-```
+~~~
 
 In this case, Firejail will try first Xpra, and if Xpra is not installed on the system, it will try
 to find Xephyr. For various reasons, X11 sandboxing features are not supported if the sandbox is
@@ -88,12 +81,12 @@ only way to resize or minimize the windows running on Xephyr server. Lots of lig
 are available on Linux platform, Firejail software provides a security profile for [Openbox](http://www.openbox.org/)
 (`apt-get install openbox`) as a reference in `/etc/firejail/openbox.profile`.
 
-```terminal
+~~~ terminal
 $ firejail --x11=xephyr --net=eth0 openbox
-```
+~~~
 
 <!-- FIXME: wordpress image -->
-![](https://firejail.files.wordpress.com/2016/04/openbox.png)
+![](https://firejail.files.wordpress.com/2016/04/openbox.png)  
 _Openbox running in a Firejail sandbox &ndash; right-click to access the application menu._
 
 Applications can be started using the window manager &ndash; right-click on an empty area of the
@@ -128,18 +121,18 @@ applications on the same server.
 
 firemon command was enhanced to print X11 display information:
 
-```terminal
+~~~ terminal
 $ firemon --x11
 2142:netblue:firejail --x11 --net=eth0 firefox
 DISPLAY :470
-```
+~~~
 
 We have Firefox already running in a sandbox, on X11 display server :470. We start a new sandbox
 and place it on the same server:
 
-```terminal
+~~~ terminal
 $ DISPLAY=:470 firejail --net=eth0 transmission-gtk
-```
+~~~
 
 Please note, a `--x11` option is not necessary when the second sandbox is started, DISPLAY
 environment variable does all the magic.
@@ -155,7 +148,7 @@ between the sandboxes. Drag and drop between the two sandboxes is possible.
 You can use `xrandr` utility to resize a Xephyr window. I sandbox an xterm, find out the display
 number used by the sandbox, and resize the window:
 
-```terminal
+~~~ terminal
 $ firejail --x11=xephyr xterm &
 $ firemon --x11
 16148:netblue:firejail xterm
@@ -178,4 +171,4 @@ default connected 640x400+0+0 (normal left inverted right x axis y axis) 0mm x 0
 240x320 0.00
 160x160 0.00
 $ xrandr --display :139 --output default --mode 1280x1024
-```
+~~~

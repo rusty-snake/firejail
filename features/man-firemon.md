@@ -1,6 +1,6 @@
 # man firemon
 
-```
+~~~
 FIREMON(1)                     firemon man page                     FIREMON(1)
 
 NAME
@@ -113,4 +113,4 @@ SEE ALSO
        jail-users(5)
 
 0.9.64                             Oct 2020                         FIREMON(1)
-```
+~~~

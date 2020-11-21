@@ -1,10 +1,8 @@
 # Building Custom Profiles
+{:.no_toc}
 
-**Contents**
-
- * [Introduction](#introduction)
- * [Blacklisted Profiles](#blacklisted-profiles)
- * [Whitelisted Profiles](#whitelisted-profiles)
++ ToC
+{:toc}
 
 ## Introduction
 
@@ -25,18 +23,18 @@ follows:
 
 **1.** Create a .config/firejail directory in your home directory:
 
-```terminal
+~~~ terminal
 $ cd ~
 $ mkdir -p .config/firejail
 $ cd .config/firejail
-```
+~~~
 
 **2.** Copy in this directory the default security profile used by Firejail to run unrecognized
 applications:
 
-```terminal
+~~~ terminal
 $ cp /etc/firejail/default.profile app_name.profile
-```
+~~~
 
 The new profile file &ndash; `app_name.profile` &ndash; needs to have the same name as the
 application, with only a .profile extension added. For example, if you intend to run `mplayer`,
@@ -47,20 +45,20 @@ files, etc. Use `man 5 firejail-profile` for a description and the correct synta
 
 **4.** Start your application:
 
-```terminal
+~~~ terminal
 $ firejail app_name
-```
+~~~
 
 As you start the application, you'll see Firejail picking up the new security profile file
 (`Reading profile /home/username/.config/firejail/app_name.profile.`):
 
-```terminal
+~~~ terminal
 $ firejail app_name
 Reading profile /home/username/.config/firejail/app_name.profile
 Reading profile /etc/firejail/disable-common.inc
 Reading profile /etc/firejail/disable-programs.inc
 Reading profile /etc/firejail/disable-passwdmgr.inc
-```
+~~~
 
 ## Whitelisted Profiles
 
@@ -89,7 +87,7 @@ information we need, so we can type `exit` and close the sandbox.
 The file name is always `appname.profile`, in this case `simutrans.profile`. The content of the
 file is as follows:
 
-```
+~~~
 # simutrans profile
 
 noblacklist ~/.simutrans
@@ -98,7 +96,7 @@ whitelist ~/.simutrans
 
 include /etc/firejail/whitelist-common.inc
 include /etc/firejail/default.profile
-```
+~~~
 
 I use `mkdir` to create the new `~/.simutrans` directory in the real user home in case it doesn't
 exist, and whitelist it. I also bring in session configuration such as fonts, desktop themes, GTK,

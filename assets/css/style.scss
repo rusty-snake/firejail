@@ -3,5 +3,16 @@
 
 @import "{{ site.theme }}";
 
+/* Additions ============================================================ */
+
 /* remove this ugly background in code-blocks */
 pre code { background-color: unset; }
+
+/* Styling of the ToC */
+#markdown-toc { background: #eee; border: 1px solid darkgray; display: inline-block; padding-right: 10px; padding-bottom: 5px; }
+
+/* Add a header to the ToC */
+#markdown-toc::before { content: "Contents"; font-weight: bold; display: inline-block; margin-top: 5px; margin-bottom: 10px; margin-left: -15px; }
+
+/* A highlighted box, used on downloads/index.md */
+#top-box { background: rgba(63, 127, 255,.2); padding: 5px; border-radius: 3px; }

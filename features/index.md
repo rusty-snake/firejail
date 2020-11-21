@@ -1,17 +1,8 @@
 # Features
+{:.no_toc}
 
-**Features**
-
- * [Linux namespaces](#linux-namespaces)
- * [Filesystem container](#filesystem-container)
- * [Security filters](#security-filters)
- * [Networking support](#networking-support)
- * [Security profiles](#security-profiles)
- * [Resource allocation](#resource-allocation)
- * [Universal packaging formats](#universal-packaging-formats)
- * [Sandbox auditing](#sandbox-auditing)
- * [Statistics and monitoring](#statistics-and-monitoring)
- * [Graphical user interface](#graphical-user-interface)
++ ToC
+{:toc}
 
 ## Linux namespaces
 

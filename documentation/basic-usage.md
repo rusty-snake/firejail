@@ -1,5 +1,5 @@
-
 # Firejail Usage
+{:.no_toc}
 
 Welcome to Firejail, a SUID security sandbox based on Linux namespaces and seccomp-bpf. We are a
 volunteer weekend project and our target is the desktop. Linux beginner or accomplished programmer,
@@ -10,11 +10,8 @@ howtos, blogs and discussion threads. I'll start with a short description of the
 technologies involved, move to sandbox configuration and management, and explore some of the most
 common usage scenarios.
 
-<!-- FIXME:
-
-## Contents
-
--->
++ ToC
+{:toc}
 
 ## 1. Technology
 
@@ -59,7 +56,7 @@ are exactly two technologies available: SUID and user namespaces. Both of them a
 namespace has the advantage when things go wrong you can blame it on kernel developers. For
 Firejail we use SUID.
 
-## 1.2 What is SUID, and how does it affect me?
+### 1.2 What is SUID, and how does it affect me?
 
 SUID (**S**et owner **U**ser **ID** upon execution) is a special type of file permissions. Most
 programs running on your computer inherit access permissions from the user logged in. SUID allows
@@ -106,9 +103,9 @@ If you are not using Chromium or a browser based on Chromium (Opera, etc.) turn 
 `force-nonewprivs` flag in `/etc/firejail/firejail.config` file. As root, open the file in a text
 editor and add this line:
 
-```
+~~~
 force-nonewprivs yes
-```
+~~~
 
 The flag prevents rising privileges after the sandbox was started. It is believed to clean most
 SUID problems that will ever be attributed to Firejail. Unfortunately, Chromium-based browsers need
@@ -120,20 +117,20 @@ To further restrict the SUID binary, create a `firejail` group, set `/usr/bin/fi
 as part of this group, change the file mode to 4750, and add only the users allowed to use Firejail
 to the group. Sample set of instructions on Debian:
 
-```terminal
+~~~ terminal
 $ su
 # addgroup firejail
 # chown root:firejail /usr/bin/firejail
 # chmod 4750 /usr/bin/firejail
 # ls -l /usr/bin/firejail
 -rwsr-x--- 1 root firejail 1584496 Apr 5 21:53 /usr/bin/firejail
-```
+~~~
 
 To add the user to the group, type:
 
-```terminal
+~~~ terminal
 # usermod -a -G firejail username
-```
+~~~
 
 A logout and login back is necessary after adding the user to the group.
 
@@ -158,9 +155,9 @@ a regular compile/install (`./configure && make && make install`).
 
 After install run:
 
-```terminal
+~~~ terminal
 $ firecfg --fix-sound
-```
+~~~
 
 This command fixes some bugs in PulseAudio software versions available on most Linux platforms.
 After running it, logout and login again for the modifications to take effect.
@@ -169,7 +166,7 @@ After running it, logout and login again for the modifications to take effect.
 
 Start the sandbox by prefixing your application with `firejail`:
 
-```terminal
+~~~ terminal
 $ firejail firefox
 Reading profile /etc/firejail/firefox.profile
 Reading profile /etc/firejail/disable-common.inc
@@ -178,7 +175,7 @@ Reading profile /etc/firejail/disable-devel.inc
 Reading profile /etc/firejail/whitelist-common.inc
 Blacklist violations are logged to syslog
 Child process initialized
-```
+~~~
 
 Any type of GUI programs should work, with sound, video and hardware acceleration support. This
 makes Firejail ideal for running desktop applications such as web browsers, media players, and
@@ -188,9 +185,9 @@ games.
 
 To integrate Firejail with your desktop environment run:
 
-```terminal
+~~~ terminal
 $ sudo firecfg
-```
+~~~
 
 As a result:
 
@@ -211,7 +208,7 @@ Some users prefer desktop launchers for stating applications. A launcher is a re
 with .desktop extension placed in `~/Desktop` directory. This is an example for Mozilla Firefox
 browser:
 
-```terminal
+~~~ terminal
 $ cat ~/Desktop/firefox.desktop
 [Desktop Entry]
 Type=Application
@@ -219,7 +216,7 @@ Name=Firefox
 Icon=firefox.png
 Exec=firejail firefox
 Terminal=false
-```
+~~~
 
 ### 2.4 Security profiles
 
@@ -231,11 +228,11 @@ something to an existing profile, use `include` command to bring in the original
 then add your commands. For example, this is a profile for a [VLC](https://www.videolan.org/vlc/index.html)
 media player without network access:
 
-```terminal
+~~~ terminal
 $ cat ~/.config/firejail/vlc.profile
 include /etc/firejail/vlc.profile
 net none
-```
+~~~
 
 For more information see [Building Custom Profiles](https://firejail.wordpress.com/documentation-2/building-custom-profiles/)
 and [Building Whitelisted Profiles](https://firejail.wordpress.com/documentation-2/building-whitelisted-profiles/)
@@ -252,24 +249,24 @@ The relevant command line options are as follow:
 In case a sandbox is not responding and you need to shut it down, use `--shutdown` option. First,
 list the sandboxes,
 
-```terminal
+~~~ terminal
 $ firejail --list
 3787:netblue:firejail --private
 3860:netblue:firejail firefox
 3963:root:firejail /etc/init.d/nginx start
-```
+~~~
 
 and then shutdown the sandbox using the PID number from the list. In this example I shut down Firefox browser:
 
-```terminal
+~~~ terminal
 $ firejail --shutdown=3860
-```
+~~~
 
 Use `--join` option if you need to join an already running sandbox and modify the filesystem, the
 network parameters, or do some other admin work. I am using firefox sandbox from the previous
 example:
 
-```terminal
+~~~ terminal
 $ firejail --join=3860
 Switching to pid 3861, the first child process inside the sandbox
 
@@ -280,7 +277,7 @@ netblue 77 2.5 0.0 20916 3716 pts/2 S 07:49 0:00 /bin/bash
 netblue 120 0.0 0.0 16840 1256 pts/2 R+ 07:49 0:00 ps aux
 
 [netblue@debian ~]$
-```
+~~~
 
 `--join` works like a regular terminal login in the sandbox. The new shell session inherits all the
 sandbox restrictions.
@@ -292,17 +289,17 @@ sandbox restrictions.
 Private mode is a quick way to hide all the files in your home directory from sandboxed programs.
 Enable it using `--private` command line option:
 
-```terminal
+~~~ terminal
 $ firejail --private firefox
-```
+~~~
 
 Firejail mounts a temporary `tmpfs` filesystem on top of `/home/user` directory. Any files created
 in this directory will be deleted when you close the sandbox. You can also use an existing
 directory as home for your sandbox, allowing you to have a persistent home:
 
-```terminal
+~~~ terminal
 $ firejail --private=~/my_private_dir firefox
-```
+~~~
 
 ### 3.2 Chroot
 
@@ -312,37 +309,37 @@ on my "stable" system, and run my application using Firejail's chroot feature. T
 
 **Step 1: Build a basic Debian sid filesystem:**
 
-```terminal
+~~~ terminal
 $ sudo mkdir /chroot
 $ sudo debootstrap --arch=amd64 sid /chroot/sid
-```
+~~~
 
 **Step 2: Add a regular user account and install the target application** ([youtube-dl](https://rg3.github.io/youtube-dl/)
 in this example):
 
-```terminal
+~~~ terminal
 $ sudo firejail --noprofile --chroot=/chroot/sid
 # adduser netblue
 # apt-get install youtube-dl
 # exit
-```
+~~~
 
 **Step 3: Run the application:**
 
-```terminal
+~~~ terminal
 $ firejail --chroot=/chroot/sid
 $ youtube-dl https://www.youtube.com/watch?v=Yk1HVPOeoTc
-```
+~~~
 
 The setup also works for GUI programs such as [mpv](https://mpv.io/) and [HandBrake](https://handbrake.fr/),
 you just have to bring the programs in:
 
-```terminal
+~~~ terminal
 $ sudo firejail --noprofile --chroot=/chroot/sid
 # apt-get update
 # apt-get upgrade
 # apt-get install handbrake mpv
-```
+~~~
 
 ### 3.3 OverlayFS
 
@@ -359,9 +356,9 @@ The steps are as follow:
 
 **Step 1: Start a root sandbox with a temporary OverlayFS filesystem**
 
-```terminal
+~~~ terminal
 $ sudo firejail --noprofile --overlay-tmpfs
-```
+~~~
 
 This is a very relaxed sandbox. All directories are visible, with an overlay on top of them. The
 only filter installed is seccomp. This means you package manager will not be able to install and
@@ -370,16 +367,16 @@ work &ndash; systemd lives in a different namespace, and it will fail to find yo
 
 **Step 2: Install the program**
 
-```terminal
+~~~ terminal
 # apt-get install aisleriot
-```
+~~~
 
 **Step 3: Switch to your regular user and run the program**
 
-```terminal
+~~~ terminal
 # su netblue
 $ sol
-```
+~~~
 
 <!-- FIXME: wordpress images -->
 ![](https://firejail.files.wordpress.com/2018/04/aisleriot.png)
@@ -404,7 +401,7 @@ _Kdenlive AppImage running in Firejail_
 
 I create a private home directory for this application and start the appimage in this directory:
 
-```terminal
+~~~ terminal
 $ mkdir ~/mykdenlive
 $ firejail --private=~/mykdenlive --appimage ~/Downloads/Kdenlive-17.12.0d-x86_64.AppImage
 Mounting appimage type 2
@@ -419,7 +416,7 @@ Parent pid 17670, child pid 17673
 Dropping all Linux capabilities and enforcing default seccomp filter
 Child process initialized in 60.82 ms
 ...
-```
+~~~
 
 All the files I am editing are in `~/mykdenlive` directory, no other files in my home are visible
 in the sandbox. You can find more examples in our [AppImage Support](https://firejail.wordpress.com/documentation-2/appimage-support/)
@@ -431,13 +428,13 @@ Currently, AppArmor Linux security module is enabled by default on Ubuntu. On ot
 you'll have to enable it yourself. The setup process is very easy, and it can be followed even by
 Linux beginners. Here are the official instructions for [Debian](https://wiki.debian.org/AppArmor/HowToUse):
 
-```terminal
+~~~ terminal
 $ sudo apt install apparmor apparmor-utils
 $ sudo mkdir -p /etc/default/grub.d
 $ echo 'GRUB_CMDLINE_LINUX_DEFAULT="$GRUB_CMDLINE_LINUX_DEFAULT apparmor=1 security=apparmor"' \
 | sudo tee /etc/default/grub.d/apparmor.cfg
 $ sudo update-grub
-```
+~~~
 
 Long story short, run these commands in a terminal and restart the computer. And these are the
 instructions for [Arch Linux](https://wiki.archlinux.org/index.php/AppArmor) and
@@ -452,27 +449,27 @@ If you don't have an AppArmor profile for your specific application, we give you
 is installed in `/etc/apparmor.d/firejail-default` file when you install Firejail. You would need
 to load it into the kernel by running the following command:
 
-```terminal
+~~~ terminal
 $ sudo aa-enforce firejail-default
-```
+~~~
 
 _Note: next time you start your computer, Firejail AppArmor profile will be loaded automatically
 into the kernel._
 
 Use `--apparmor` command line option to enable AppArmor confinement inside your sandboxed application:
 
-```terminal
+~~~ terminal
 $ firejail --apparmor warzon2100
-```
+~~~
 
 In profile files, use `apparmor` command. This is the previous VLC profile with AppArmor support:
 
-```terminal
+~~~ terminal
 $ cat ~/.config/firejail/vlc.profile
 include /etc/firejail/vlc.profile
 net none
 apparmor
-```
+~~~
 
 ### 3.6 EncFS and SSHFS
 
@@ -491,7 +488,7 @@ The solution is to allow root user to access the filesystem using `allow_root` F
 some distributions (Debian & friends) you might have to change FUSE config file in `/etc/fuse.conf`
 and uncomment `user_allow_other` line:
 
-```terminal
+~~~ terminal
 $ cat /etc/fuse.conf
 # /etc/fuse.conf - Configuration file for Filesystem in Userspace (FUSE)
 
@@ -501,19 +498,19 @@ $ cat /etc/fuse.conf
 
 # Allow non-root users to specify the allow_other or allow_root mount options.
 user_allow_other
-```
+~~~
 
 This is how to start a Firejail-friendly EncFS:
 
-```terminal
+~~~ terminal
 $ encfs -o allow_root ~/.crypt ~/crypt
-```
+~~~
 
 And this is a SSHFS:
 
-```terminal
+~~~ terminal
 $ sshfs -o reconnect,allow_root netblue@192.168.1.25:/home/netblue/work work
-```
+~~~
 
 After mounting your FUSE filesystem, start your sandboxes the regular way.
 
@@ -539,7 +536,7 @@ You can create a network namespace with `--net` command. There are three setups 
 
 Run `ip addr show` to find the name of your wired Ethernet interface (eth0 in my case):
 
-```terminal
+~~~ terminal
 $ ip addr show
 1: lo: mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1
 link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
@@ -553,13 +550,13 @@ inet 192.168.1.50/24 brd 192.168.1.255 scope global eth0
 valid_lft forever preferred_lft forever
 inet6 fe80::e23f:49ff:fe7a:1409/64 scope link
 valid_lft forever preferred_lft forever
-```
+~~~
 
 and start the sandbox
 
-```terminal
+~~~ terminal
 $ firejail --net=eth0 firefox
-```
+~~~
 
 You can specify an IP address (`--ip=192.168.1.207`), a range of IP addresses
 (`--iprange=192.168.1.100,192.168.1.240`) to choose from, or you can let the sandbox find an unused
@@ -576,21 +573,21 @@ _Direct network_
 
 This is a Firefox profile adding network namespace support to the sandbox:
 
-```terminal
+~~~ terminal
 $ cat ~/.config/firejail/firefox-exr.profile
 include /etc/firejail/firefox-esr.profile
 net eth0
 iprange 192.168.1.100,192.168.1.240
-```
+~~~
 
 Similar, a profile for [Transmission](https://transmissionbt.com/):
 
-```terminal
+~~~ terminal
 $ cat ~/.config/firejail/transmission-qt.profile
 include /etc/firejail/transmission-qt.profile
 net eth0
 iprange 192.168.1.100,192.168.1.240
-```
+~~~
 
 In the examples above, I let Firefox and Transmission fight for address in
 `192.168.1.100 - 192.168.1.240` range. Actually, all network clients on my home network are
@@ -611,7 +608,7 @@ enabled on the host in order for the sandbox traffic to go out on Internet:
 
 Script for setting this up &ndash; I assume a wired eth0 interface for the system:
 
-```bash
+~~~ bash
 #!/bin/bash
 
 #
@@ -640,16 +637,16 @@ iptables -t nat -A POSTROUTING -o eth0 -s 10.10.20.0/24 -j MASQUERADE
 
 Starting the sandbox:
 
-```terminal
+~~~ terminal
 $ firejail --net=br0 firefox
-```
+~~~
 
 For running servers I replace network address translation with port forwarding in the script above:
 
-```terminal
+~~~ terminal
 # host port 80 forwarded to sandbox port 80
 iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to 10.10.20.10:80
-```
+~~~
 
 ### 4.3 Traffic shaping
 
@@ -658,19 +655,19 @@ shaping allows the user to increase network performance by controlling the amoun
 flows into and out of sandboxes. Firejail implements a simple rate-limiting shaper based on Linux
 `tc` command. The shaper works at sandbox level:
 
-```terminal
+~~~ terminal
 $ firejail --name=browser --net=eth0 firefox &
 $ firejail --bandwidth=browser set eth0 80 20
-```
+~~~
 
 In this example I set a bandwidth of 80 kilobytes per second on receive side and a bandwidth of 20
 kilobytes per second on transmit side. As the sandbox is running, I can change the values or even
 reset them:
 
-```terminal
+~~~ terminal
 $ firejail --bandwidth=browser set eth0 40 10
 $ firejail --bandwidth=browser clear eth0
-```
+~~~
 
 ## 5. X11 Sandboxing
 
@@ -686,9 +683,9 @@ Xephyr window.
 In order to be able to rearrange and resize windows, I start OpenBox window manager on top of
 Xephyr. Notice `--net=none` command option.
 
-```terminal
+~~~ terminal
 $ firejail --x11=xephyr --net=none openbox&
-```
+~~~
 
 _Note: You can replace openbox with any other supported window manager. Currently we support
 openbox, fluxbox, blackbox, awesome and i3._
@@ -704,22 +701,22 @@ Each X11 server server running on your box is identified by a unique display num
 used to connect X11 applications to a specific X11 server. Run `firemon --x11` to find Xephyr's
 display number:
 
-```terminal
+~~~ terminal
 $ firemon --x11
 2377:netblue::/usr/bin/firejail /usr/bin/Xephyr -ac -br -noreset -screen 1024x
 2394:netblue::firejail --net=none openbox
 DISPLAY :265
-```
+~~~
 
 The display number is 265. Notice how Xephyr and OpenBox are running in independent Firejal
 sandboxes. Let's start some more sandboxes:
 
 **Step 3. Start your applications**
 
-```terminal
+~~~ terminal
 $ DISPLAY=:265 firejail --net=eth0 firefox -no-remote &
 $ DISPALY=:265 firejail --net=none inkscape &
-```
+~~~
 
 <!-- FIXME: wordpress images -->
 ![](https://firejail.files.wordpress.com/2018/04/hb-x11-xephyr.png)
@@ -737,14 +734,14 @@ _X11 sandboxing using Xephyr_
 As a rule, always use a new network namespace for server sandboxes in order to isolate services
 such as SSH, X11, DBus running on your workstation. This is an Apache server example:
 
-```terminal
+~~~ terminal
 # firejail --net=eth0 --ip=192.168.1.244 /etc/init.d/apache2 start
-```
+~~~
 
 The default server profile is /etc/firejail/server.profile. To further restrict your servers, here
 are some ideas:
 
-```
+~~~
 # capabilities list for Apache server
 caps.keep chown,sys_resource,net_bind_service,setuid,setgid
 
@@ -756,7 +753,7 @@ netfilter /etc/firejail/webserver.net
 
 # instead of /var/www/html for webpages, use a different directory
 bind /server/web1,/var/www/html
-```
+~~~
 
 You can run thousands of webservers on a regular system, each one with its own IP address,
 webpages, and applications.

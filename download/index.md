@@ -1,6 +1,7 @@
 # Download
 
------
+{::options parse_block_html="true" /}
+<div id="top-box">
 
 Download the latest version:
 
@@ -10,6 +11,7 @@ Download the latest version:
  * Firetools current: 0.9.62 ([SourceForge](https://sourceforge.net/projects/firejail/files/firetools/)).
  * fdns current: 0.9.62.10 ([GitHub](https://github.com/netblue30/fdns/releases)).
 
+
 In case SourceForge is down, a mirror is available on [Open Source Developer Network](https://osdn.net/projects/sfnet_firejail/releases/).
 
 For release notifications subscribe to the atom feeds below:
@@ -17,6 +19,9 @@ For release notifications subscribe to the atom feeds below:
  * <https://github.com/netblue30/firejail/releases.atom>
  * <https://github.com/netblue30/firetools/releases.atom>
  * <https://github.com/netblue30/fdns/releases.atom>
+
+</div>
+{::options parse_block_html="false" /}
 
 -----
 
@@ -50,37 +55,37 @@ You will be able to start your sandboxed applications by:
 
 To install our binary packages run:
 
-```terminal
+~~~ terminal
 (Debian/Ubuntu)
 $ sudo dpkg -i firejail_X.Y.Z_amd64.deb
 or
 $ sudo dpkg -i firejail_X.Y.Z_i386.deb
 (Fedora)
 $ sudo rpm -i firejail-X.Y.Z.rpm 
-```
+~~~
 
 ## Source Code
 
 Download the source code archive and extract the files:
 
-```terminal
+~~~ terminal
 $ tar -xJvf firejail-X.Y.Z.tar.xz 
-```
+~~~
 
 Compile and install
 
-```terminal
+~~~ terminal
 $ cd firejail-X.Y.Z
 $ ./configure && make && sudo make install-strip 
-```
+~~~
 
 AppArmor support is not enabled by default at compile time. It is also missing from the binary
 packages we distribute on this site. Add `--enable-apparmor` in configure command to include this
 support:
 
-```terminal
+~~~ terminal
 $ ./configure --enable-apparmor && make && sudo make install-strip
-```
+~~~
 
 <!-- FIXME: wordpress link -->
 You can find more AppArmor information in our [Firejail Usage](https://firejail.wordpress.com/documentation-2/basic-usage/#apparmor)
@@ -93,11 +98,11 @@ Firetools compilation is described [here](https://firejailtools.wordpress.com/do
 Firejail's source code is hosted in a [Git](https://github.com/netblue30/firejail) repository on
 GitHub. You can access and compile it with the following commands:
 
-```terminal
+~~~ terminal
 $ git clone https://github.com/netblue30/firejail.git
 $ cd firejail
 $ ./configure && make && sudo make install 
-```
+~~~
 
 ## Checksums
 
@@ -109,7 +114,7 @@ firejail-X.Y.Z.asc file also includes a [GnuPG](https://www.gnupg.org/) signatur
 the integrity of the file using our public key below. We use this key across all Firejail-related
 projects.
 
-```
+~~~
 -----BEGIN PGP PUBLIC KEY BLOCK-----
 Version: GnuPG v1.4.12 (GNU/Linux)
 
@@ -140,4 +145,4 @@ ilSqRQrPqyCjic8MUB9S+eBQC4Z67i9YqJaBfb80x9HqINLncGFDHKIajwy8f7Sh
 k67z733GYXrAnyHsia4IF4UGRLW4+1xtKE9xmUThmwMdkgqtJ9eqBpAF9A==
 =/BT3
 -----END PGP PUBLIC KEY BLOCK-----
-```
+~~~

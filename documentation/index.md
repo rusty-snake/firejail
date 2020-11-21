@@ -4,10 +4,10 @@
 
 Integrate your sandbox into your desktop by running:
 
-```terminal
+~~~ terminal
 $ sudo apt-get install firejail_xyz.deb
 $ sudo firecfg
-```
+~~~
 
 Start your programs the way you are used to: desktop manager menus, file manager, desktop
 launchers. The integration applies to any program supported by default by Firejail. There are over

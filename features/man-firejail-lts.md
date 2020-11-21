@@ -1,6 +1,6 @@
 # man firejail (LTS)
 
-```
+~~~
 FIREJAIL(1)                    firejail man page                   FIREJAIL(1)
 
 NAME
@@ -1557,4 +1557,4 @@ SEE ALSO
        firemon(1), firecfg(1), firejail-profile(5), firejail-users(5)
 
 0.9.56-LTS                         Oct 2018                        FIREJAIL(1)
-```
+~~~

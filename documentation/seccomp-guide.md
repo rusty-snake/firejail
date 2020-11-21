@@ -1,14 +1,8 @@
 # Seccomp Guide
+{:.no_toc}
 
-**Contents**
-
- * [Introduction](#introduction)
- * [Syscalls](#syscalls)
- * [Firejail](#firejail)
- * [Syslog](#syslog)
- * [Security Profiles](#security-profiles)
- * [Conclusion](#conclusion)
-
++ ToC
+{:toc}
 
 ## Introduction
 
@@ -34,19 +28,19 @@ Linux has several tools for listing syscalls. The easiest one to use seems to be
 (`apt-get install strace`). We start `transmission-gtk` in `strace` using `-qcf` options (`quiet`,
 `count`, `follow`).
 
-```terminal
+~~~ terminal
 $ strace -qcf transmission-gtk
-```
+~~~
 
 We play for about 5 minutes with the program, go through some menus, start and stop a download etc.
 
 <!-- FIXME: wordpress image -->
-![](https://l3net.files.wordpress.com/2015/04/seccomp-transmission.png)
+![](https://l3net.files.wordpress.com/2015/04/seccomp-transmission.png)  
 _transmission-gtk BitTorrent client_
 
 As we close the program, strace prints the syscall list on the terminal:
 
-```terminal
+~~~ terminal
 % time seconds usecs/call calls errors syscall
 ------ ----------- ----------- --------- --------- ----------------
 42.93 3.095527 247 12512 poll
@@ -64,7 +58,7 @@ As we close the program, strace prints the syscall list on the terminal:
 0.00 0.000000 0 1 inotify_init1
 ------ ----------- ----------- --------- --------- ----------------
 100.00 7.210150 95061 23256 total
-```
+~~~
 
 
 ## Firejail
@@ -72,16 +66,16 @@ As we close the program, strace prints the syscall list on the terminal:
 We bring `strace` output (cut&paste) in a text editor and clean it up. We extract a comma-separated
 list without any blanks, something like:
 
-```
+~~~
 poll,select,nanosleep,futex,epoll_wait,fadvise64,read,lstat,stat,[...]
-```
+~~~
 
 We use `--seccomp.keep` option to start Firejail, and `--shell=none` to run the program directly
 without the extra syscalls required by a shell:
 
-```terminal
+~~~ terminal
 $ firejail --shell=none --seccomp.keep=poll,select,[...] transmission-gtk
-```
+~~~
 
 <!-- FIXME: wordpress image -->
 ![](https://l3net.files.wordpress.com/2015/04/seccomp-xterm2.png)
@@ -96,9 +90,9 @@ If we get errors in the terminal, we just add the missing syscall to the list an
 this is not always the case. Most of the time Linux kernel will just kill the process and send
 audit messages to syslog. For this reason, we keep another terminal open monitoring syslog:
 
-```terminal
+~~~ terminal
 $ sudo tail -f /var/log/syslog
-```
+~~~
 
 <!-- FIXME: wordpress image -->
 ![](https://l3net.files.wordpress.com/2015/04/seccomp-syslog.png)
@@ -106,10 +100,10 @@ $ sudo tail -f /var/log/syslog
 The log entry tells us exactly what system call number crashed the program, `syscall=201` in the
 example above. To associate the number with a name, we use firejail as follows:
 
-```terminal
+~~~ terminal
 $ firejail --debug-syscalls | grep 201
 201 - time
-```
+~~~
 
 We keep on adding syscalls to the list as they are reported and try again. To get Transmission
 working we ended up adding `pwrite64,time,exit,exit_group` on top of what `strace` reported &ndash;
@@ -126,16 +120,16 @@ Transmission BitTorrent client is supported, and the profile also defines a defa
 blacklist filter. I want to upgrade this filter to the whitelist filter I've just built. For this,
 I go into `~/.config/firejail` directory and copy the default Transmission profile there:
 
-```terminal
+~~~ terminal
 $ cd ~/.config/firejail
 $ cp /etc/firejail/transmission-gtk.profile .
 $ vim transmission-gtk.profile
-```
+~~~
 
 We add a `shell none` line, and we replace `seccomp` with `seccomp.keep poll,select,nanosleep,futex,epoll_wait,fadvise64,[...]`.
 The result looks like this:
 
-```terminal
+~~~ terminal
 $ cd ~/.config/firejail
 $ cat transmission-gtk.profile
 # transmission-gtk profile
@@ -156,7 +150,7 @@ tracelog
 shell none
 seccomp.keep poll,select,nanosleep,futex,epoll_wait,fadvise64,read,lstat,stat,epoll_ctl,sendto,readv,recvfrom,ioctl,write,inotify_add_watch,writev,socket,getdents,mprotect,mmap,open,close,fstat,lseek,munmap,brk,rt_sigaction,rt_sigprocmask,access,pipe,madvise,connect,sendmsg,recvmsg,bind,listen,getsockname,getpeername,socketpair,setsockopt,getsockopt,clone,execve,uname,fcntl,ftruncate,rename,mkdir,rmdir,unlink,readlink,umask,getrlimit,getrusage,times,getuid,getgid,geteuid,getegid,getresuid,getresgid,statfs,fstatfs,prctl,arch_prctl,epoll_create,set_tid_address,clock_getres,inotify_rm_watch,set_robust_list,fallocate,eventfd2,inotify_init1,pwrite64,time,exit,exit_group
 $
-```
+~~~
 
 The command `caps.drop all` in the security profile above disables all capabilities.
 [Linux capabilities](https://l3net.wordpress.com/2015/03/16/firejail-linux-capabilities-guide/)
@@ -170,12 +164,12 @@ Between seccomp, capabilities and protocols more than half the kernel code is di
 Firejail chooses the profile automatically, based on the name of the executable. To run
 Transmission with all security features enabled, the command is:
 
-```terminal
+~~~ terminal
 $ firejail transmission-gtk
-```
+~~~
 
 <!-- FIXME: wordpress image -->
-![](https://l3net.files.wordpress.com/2015/04/seccomp-transmission-final.png?w=625&h=643)
+![](https://l3net.files.wordpress.com/2015/04/seccomp-transmission-final.png)  
 _transmission-gtk started in Firejail using the profile file_
 
 

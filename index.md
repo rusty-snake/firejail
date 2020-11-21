@@ -17,12 +17,12 @@ Firejail can sandbox any type of processes: servers, graphical applications, and
 sessions. The software includes security profiles for a large number of Linux programs: Mozilla
 Firefox, Chromium, VLC, Transmission etc. To start the sandbox, prefix your command with `firejail`:
 
-```terminal
+~~~ terminal
 $ firejail firefox                       # starting Mozilla Firefox
 $ firejail transmission-gtk              # starting Transmission BitTorrent 
 $ firejail vlc                           # starting VideoLAN Client
 $ sudo firejail /etc/init.d/nginx start  # starting nginx web server
-```
+~~~
 
 
 # Latest Video

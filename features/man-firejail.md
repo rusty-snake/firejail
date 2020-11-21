@@ -1,6 +1,6 @@
 # man firejail
 
-```
+~~~
 FIREJAIL(1)                    firejail man page                   FIREJAIL(1)
 
 NAME
@@ -2373,4 +2373,4 @@ SEE ALSO
        ⟨https://github.com/netblue30/firejail⟩
 
 0.9.64                             Oct 2020                        FIREJAIL(1)
-```
+~~~

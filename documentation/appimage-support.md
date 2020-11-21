@@ -1,12 +1,8 @@
-
 # AppImage Support
+{:.no_toc}
 
-**Contents**
-
- * [Introduction](#introduction)
- * [Usage](#usage)
- * [A Full Example](#a-full-example)
- * [More Information](#more-information)
++ ToC
+{:toc}
 
 **TLDR**
 
@@ -36,49 +32,49 @@ AppImage/Firejail combo:
 
 Start your AppImage application in Firajail using `--appimage` command line option:
 
-```terminal
+~~~ terminal
 $ firejail --appimage krita-3.0-x86_64.appimage
-```
+~~~
 
 All sandboxing options should be available. A private home directory:
 
-```terminal
+~~~ terminal
 $ firejail --appimage --private krita-3.0-x86_64.appimage
-```
+~~~
 
 or some basic X11 sandboxing:
 
-```terminal
+~~~ terminal
 $ firejail --appimage --net=none --x11 krita-3.0-x86_64.appimage
-```
+~~~
 
 ## A Full Example
 
 I download [Firefox Developer Edition](https://bintray.com/probono/AppImages/Firefox) from AppImage
 project repository, and I start the sandbox:
 
-```terminal
+~~~ terminal
 $ firejail --appimage --private --net=eth0 --x11 ~/Downloads/Firefox-Dev-48.0a2.en.glibc2.3.3-x86_64.AppImage
-```
+~~~
 
 I use `--appimage` to enter appimage mode, `--private` to create an empty home directory,
 `--net=eth0` to create a new network namespace, and `--x11` for X11 sandboxing based on [Xpra](https://xpra.org/).
 
 <!-- FIXME: wordpress image -->
-![](https://firejail.files.wordpress.com/2016/07/appimage-ff.png)
+![](https://firejail.files.wordpress.com/2016/07/appimage-ff.png)  
 _Firefox Developer Edition AppImage running in Firejail sandbox_
 
 Next, I start the graphical user interface to verify some of the security parameters:
 
 <!-- FIXME: wordpress image -->
-![](https://firejail.files.wordpress.com/2016/07/appimage-tools.png?w=625&h=317)
+![](https://firejail.files.wordpress.com/2016/07/appimage-tools.png)  
 _Firetools_
 
 I have two sandboxes running in this moment, Firefox AppImage and Transmission BitTorrent client. I
 click on Firefox sandbox to get the stats:
 
 <!-- FIXME: wordpress image -->
-![](https://firejail.files.wordpress.com/2016/07/appimage-stats.png)
+![](https://firejail.files.wordpress.com/2016/07/appimage-stats.png)  
 _Firefox Developer Edition sandbox statistics_
 
 In the stats window I look at seccomp status (enabled) and the capability field (all zero). These
@@ -88,9 +84,9 @@ Since I also have a BitTorrent download going on, I also keep an eye on the netw
 needed, I can limit the traffic for each sandbox using the bandwidth limiting capabilities in
 Firejail:
 
-```terminal
+~~~ terminal
 $ firejail --bandwidth=32119 set eth0 80 20
-```
+~~~
 
 In this example I use Firefox PID (32119) and limit the sandbox traffic on interface eth0 to
 80 KB/s in receive direction, and 20 KB/s in transmit direction.

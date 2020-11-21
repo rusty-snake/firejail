@@ -1,6 +1,6 @@
 # man firejail-profile
 
-```
+~~~
 FIREJAIL-PROFILE(5)       firejail profiles man page       FIREJAIL-PROFILE(5)
 
 NAME
@@ -833,4 +833,4 @@ SEE ALSO
        Profiles⟩
 
 0.9.64                             Oct 2020                FIREJAIL-PROFILE(5)
-```
+~~~

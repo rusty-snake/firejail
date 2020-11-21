@@ -1,12 +1,8 @@
 # Linux Capabilities Guide
+{:.no_toc}
 
-**Contents**
-
- * [Introduction](#introduction)
- * [Building a Whitelist Capabilities Set](#building-a-whitelist-capabilities-set)
- * [Common Servers](#common-servers)
- * [Unprivileged Programs](#unprivileged-programs)
- * [Conclusion](#conclusion)
++ ToC
+{:toc}
 
 ## Introduction
 
@@ -34,7 +30,7 @@ option to configure the allowed set of capabilities for the server processes. Th
 as a comma-separated list of names. For a list of all capabilities available on your system run
 `man 7 capabilities` or `firejail --debug-caps`:
 
-```terminal
+~~~ terminal
 $ firejail --debug-caps
 0 - chown
 1 - dac_override
@@ -46,7 +42,7 @@ $ firejail --debug-caps
 7 - setuid
 8 - setpcap
 ...
-```
+~~~
 
 For our nginx server we can tell off the bat that we need at least the following: `CAP_SETUID`,
 `CAP_SETGID` and `CAP_NET_BIND_SERVICE`. We need the first two because the server changes the user
@@ -54,7 +50,7 @@ and group ids of the working processes from root to a generic unprivileged user.
 `CAP_NET_BIND_SERVICE` to bind to TCP port 80. We start the sandbox with this whitelist, and add
 more capabilities as required. First try:
 
-```terminal
+~~~ terminal
 (started as root)
 # firejail --caps.keep=setgid,setuid,net_bind_service /etc/init.d/nginx start
 Reading profile /etc/firejail/server.profile
@@ -70,12 +66,12 @@ nginx: [emerg] chown("/var/lib/nginx/body", 33) failed (1: Operation not permitt
 nginx: configuration file /etc/nginx/nginx.conf test failed
 
 parent is shutting down, bye...
-```
+~~~
 
 The server tries to change the ownership of `/var/lib/nginx/body`, and failing to do so, shuts
 down. We need to add `CAP_CHOWN` to our whitelist:
 
-```terminal
+~~~ terminal
 # firejail --caps.keep=setgid,setuid,net_bind_service,chown /etc/init.d/nginx start
 Reading profile /etc/firejail/server.profile
 Reading profile /etc/firejail/disable-mgmt.inc
@@ -86,7 +82,7 @@ Parent pid 6953, child pid 6954
 The new log directory is /proc/6954/root/var/log
 Child process initialized
 Starting nginx: nginx.
-```
+~~~
 
 With this modification, the server is running. The same way we can build capabilities list for all
 regular servers we use everyday.
@@ -96,7 +92,7 @@ regular servers we use everyday.
 These are whitelist examples for some common servers. For increased security, we also enable the
 default [seccomp](http://en.wikipedia.org/wiki/Seccomp) filter:
 
-```terminal
+~~~ terminal
 (nginx web server)
 # firejail --caps.keep=chown,net_bind_service,setgid,setuid --seccomp /etc/init.d/nginx start
 
@@ -109,7 +105,7 @@ default [seccomp](http://en.wikipedia.org/wiki/Seccomp) filter:
 
 (ISC DHCP server)
 # firejail --caps.keep=net_bind_service,net_raw --seccomp /etc/init.d/isc-dhcp-server start
-```
+~~~
 
 Notice how [ISC DHCP](https://www.isc.org/downloads/dhcp/) server doesn't require `CAP_SETUID` and
 `CAP_SETGID`, and it doesn't drop root privileges. The server runs strictly as root. In this case
@@ -125,7 +121,7 @@ kernel directly. Once the process becomes root, it has all capabilities availabl
 Firejail mitigates this case by dropping all capabilities from the inheritable capabilities set in
 profile files:
 
-```terminal
+~~~ terminal
 $ cat /etc/firejail/firefox.profile
 # Firejail profile for Mozilla Firefox (Iceweasel in Debian)
 noblacklist ${HOME}/.mozilla
@@ -138,7 +134,7 @@ seccomp
 protocol unix,inet,inet6,netlink
 netfilter
 [...]
-```
+~~~
 
 ## Conclusion
 
