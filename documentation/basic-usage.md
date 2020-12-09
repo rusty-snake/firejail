@@ -379,7 +379,7 @@ $ sol
 ~~~
 
 <!-- FIXME: wordpress images -->
-![](https://firejail.files.wordpress.com/2018/04/aisleriot.png)
+![](https://firejail.files.wordpress.com/2018/04/aisleriot.png)  
 _Playing Klondike (AisleRiot) in a Firejail sandbox_
 
 ### 3.4 AppImage
@@ -719,14 +719,14 @@ $ DISPALY=:265 firejail --net=none inkscape &
 ~~~
 
 <!-- FIXME: wordpress images -->
-![](https://firejail.files.wordpress.com/2018/04/hb-x11-xephyr.png)
+![](https://firejail.files.wordpress.com/2018/04/hb-x11-xephyr.png)  
 _Independent Inkscape and Firefox sandboxes running in a Xephyr X11 window_
 
 In this moment I have 4 independent sandboxes, one for each program involved: Xephyr, OpenBox,
 Inkscape and Firefox.
 
 <!-- FIXME: wordpress images -->
-![](https://firejail.files.wordpress.com/2018/04/hb-x11-list.png)
+![](https://firejail.files.wordpress.com/2018/04/hb-x11-list.png)  
 _X11 sandboxing using Xephyr_
 
 ## 6. Servers

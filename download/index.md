@@ -87,8 +87,7 @@ support:
 $ ./configure --enable-apparmor && make && sudo make install-strip
 ~~~
 
-<!-- FIXME: wordpress link -->
-You can find more AppArmor information in our [Firejail Usage](https://firejail.wordpress.com/documentation-2/basic-usage/#apparmor)
+You can find more AppArmor information in our [Firejail Usage](../documentation/basic-usage.html#apparmor)
 document.
 
 Firetools compilation is described [here](https://firejailtools.wordpress.com/downloads/).

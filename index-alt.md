@@ -1,5 +1,14 @@
 # About
 
+{::options parse_block_html="true" /}
+<div id="moz-fox-home-img">
+
+![](https://firejail.files.wordpress.com/2015/12/firejail-main.png)  
+_User home directory as seen by Mozilla Firefox browser process_
+
+</div>
+{::options parse_block_html="false" /}
+
 **Firejail** is a SUID program that reduces the risk of security breaches by restricting the
 running environment of untrusted applications using [Linux namespaces](https://lwn.net/Articles/531114/)
 and [seccomp-bpf](https://l3net.wordpress.com/2015/04/13/firejail-seccomp-guide/). It allows a
